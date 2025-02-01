@@ -1,21 +1,19 @@
-import { auth } from "@/auth";
+"use client";
 import NavBar from "@/components/app/NavBar";
-import { redirect } from "next/navigation";
 import React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-export default async function layout({
+const queryClient = new QueryClient();
+
+export default function layout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
-    const session = await auth();
-    // if no session exists, redirect to the login page
-    if (!session) {
-        redirect("/");
-        return null;
-    }
     return (
         <>
-            <main className="p-4">{children}</main>
-            <NavBar />
+            <QueryClientProvider client={queryClient}>
+                <main className="p-4">{children}</main>
+                <NavBar />
+            </QueryClientProvider>
         </>
     );
 }
