@@ -13,11 +13,10 @@ export default {
     },
     session({ session, token }) {
       if (token) {
-        session.user.id = token.token.user.id;
+        session.user.id = token.id as string;
       }
       return {
         ...session,
-        user: token.token.user,
       };
     },
   },
