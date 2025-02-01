@@ -1,51 +1,47 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 export interface PomoSessionDocument {
-    _id: string;
-    userId: string;
-    taskId: string;
-    startAt: Date;
-    paused: boolean;
-    pausedAt?: Date;
-    endAt: Date;
-    duration: number;
-    createdAt: Date;
-    updatedAt: Date;
+  _id: string;
+  userId: string;
+  startAt: Date;
+  endAt: Date;
+  paused: boolean;
+  pausedAt?: Date;
+  duration: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const pomoSessionSchema = new Schema<PomoSessionDocument>(
-    {
-        userId: {
-            type: String,
-            required: [true, "User ID is required"],
-        },
-        taskId: {
-            type: String,
-            required: [true, "Task ID is required"],
-        },
-        startAt: {
-            type: Date,
-            required: [true, "Start time is required"],
-        },
-        paused: {
-            type: Boolean,
-            default: false,
-        },
-        endAt: {
-            type: Date,
-        },
-        duration: {
-            type: Number,
-            required: [true, "Duration is required"],
-        },
+  {
+    userId: {
+      type: String,
+      required: [true, "User ID is required"],
     },
-    {
-        timestamps: true,
-    }
+    startAt: {
+      type: Date,
+      required: [true, "Start time is required"],
+    },
+    endAt: {
+      type: Date,
+    },
+    paused: {
+      type: Boolean,
+      default: false,
+    },
+    pausedAt: {
+      type: Date,
+      required: false,
+      default: null,
+    },
+    duration: {
+      type: Number,
+      required: [true, "Duration is required"],
+    },
+  },
+  {
+    timestamps: true,
+  }
 );
 
-const PomoSession = model<PomoSessionDocument>(
-    "PomoSession",
-    pomoSessionSchema
-);
-export default PomoSession;
+export default models.PomoSession || model("PomoSession", pomoSessionSchema);
