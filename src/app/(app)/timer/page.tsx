@@ -60,7 +60,7 @@ export default function TimerPage() {
         if (!onBreak) {
           setOnBreak(true);
           console.log("Break started");
-          restart(new Date(new Date().getTime() + 10000), false);
+          restart(new Date(new Date().getTime() + 60000 * 5), false);
         }
         // start 25 minutes timer
       }
