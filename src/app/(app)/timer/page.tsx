@@ -7,22 +7,13 @@ import { useState } from "react";
 export default function TimerPage() {
   const time = new Date();
   const [started, setStarted] = useState(false);
-  const expiryTimestamp = new Date(time.setSeconds(time.getSeconds() + 600)); // 10 seconds timer
+  const [onBreak, setOnBreak] = useState(false);
+  const expiryTimestamp = new Date(time.setSeconds(time.getSeconds() + 1500)); // 10 seconds timer
   const { seconds, minutes, isRunning, start, pause, resume, restart } =
     useTimer({
       expiryTimestamp,
       onExpire: () => {
-        fetch("/api/timer/stop", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}),
-        }).then((res) => {
-          if (res.ok) {
-            console.log("Timer stopped");
-          }
-        });
+        handleStop();
       },
       autoStart: false,
     });
@@ -33,7 +24,6 @@ export default function TimerPage() {
       const res = await fetch("/api/timer/current_timer");
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
         const { endAt, pausedAt, paused } = data;
         if (paused) {
           const timeLeft =
@@ -50,6 +40,33 @@ export default function TimerPage() {
     };
     fetchCurrentTimer();
   }, []);
+
+  const handleStop = () => {
+    if (onBreak) {
+      setOnBreak(false);
+      return restart(expiryTimestamp, false);
+    }
+    fetch("/api/timer/stop", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    }).then((res) => {
+      if (res.ok) {
+        console.log("Timer stopped");
+        setStarted(false);
+        // start 5 minutes break
+        if (!onBreak) {
+          setOnBreak(true);
+          console.log("Break started");
+          restart(new Date(new Date().getTime() + 10000), false);
+        }
+        // start 25 minutes timer
+      }
+    });
+  };
+
   const handleStart = () => {
     fetch("/api/timer/start", {
       method: "POST",
@@ -98,12 +115,14 @@ export default function TimerPage() {
 
   const timerButtons = () => {
     if (!started) {
-      return <Button onClick={handleStart}>Start</Button>;
+      return <Button onClick={onBreak ? start : handleStart}>Start</Button>;
     } else {
       if (isRunning) {
-        return <Button onClick={handlePauze}>Pause</Button>;
+        return <Button onClick={onBreak ? pause : handlePauze}>Pause</Button>;
       } else {
-        return <Button onClick={handleResume}>Resume</Button>;
+        return (
+          <Button onClick={onBreak ? resume : handleResume}>Resume</Button>
+        );
       }
     }
   };
@@ -116,7 +135,10 @@ export default function TimerPage() {
         <span>:</span>
         <span>{seconds}</span>
       </h2>
-      <div className="flex space-x-4">{timerButtons()}</div>
+      <div className="flex space-x-4">
+        {timerButtons()}
+        <Button onClick={handleStop}>quit early</Button>
+      </div>
     </div>
   );
 }

@@ -22,16 +22,17 @@ export async function POST() {
     }
 
     const currentDate = new Date();
+    const timeInMinutes = 25;
+    const duration = 60 * timeInMinutes * 1000; // 25 minutes
 
     // Create new PomoSession
     const newSession = new PomoSession({
       userId: session?.user?.id,
       startAt: currentDate,
-      endAt: new Date(currentDate.getTime() + 60 * 10 * 1000), // 10 minutes
-      duration: 60 * 10 * 1000, // 10 minutes
+      endAt: new Date(currentDate.getTime() + duration),
+      duration: duration,
       paused: false,
     });
-    console.log(newSession);
     await newSession.save();
     return NextResponse.json({ message: "Timer started" });
   } catch (error) {

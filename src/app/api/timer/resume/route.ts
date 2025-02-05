@@ -20,7 +20,6 @@ export async function PUT() {
       );
     }
     // check if the session is not paused
-    console.log(activeSession.paused);
     if (!activeSession.paused) {
       return NextResponse.json(
         { error: "Session is not paused" },
