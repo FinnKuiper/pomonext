@@ -6,14 +6,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 export default function layout({
-    children,
+  children,
 }: Readonly<{ children: React.ReactNode }>) {
-    return (
-        <>
-            <QueryClientProvider client={queryClient}>
-                <main className="p-4">{children}</main>
-                <NavBar />
-            </QueryClientProvider>
-        </>
-    );
+  return (
+    <>
+      <QueryClientProvider client={queryClient}>
+        <main className="p-4 h-full flex justify-center items-center">
+          {children}
+        </main>
+        <NavBar />
+      </QueryClientProvider>
+    </>
+  );
 }

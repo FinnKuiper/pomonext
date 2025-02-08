@@ -3,6 +3,13 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect } from "react";
 import { useTimer } from "react-timer-hook";
 import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function TimerPage() {
   const time = new Date();
@@ -39,7 +46,7 @@ export default function TimerPage() {
       }
     };
     fetchCurrentTimer();
-  }, []);
+  }, [restart]);
 
   const handleStop = () => {
     if (onBreak) {
@@ -127,18 +134,45 @@ export default function TimerPage() {
     }
   };
 
+  // return (
+  //   <div className="bg-red-400 w-min h-min p-4 rounded-lg flex flex-col items-center gap-4 text-white">
+  //     <h1>Timer</h1>
+  //     <h2 className="scroll-m-20 text-4xl font-semibold tracking-tight first:mt-0">
+  //       <span>{minutes}</span>
+  //       <span>:</span>
+  //       <span>{seconds}</span>
+  //     </h2>
+  //     <div className="flex space-x-4">
+  //       {timerButtons()}
+  //       <Button onClick={handleStop}>quit early</Button>
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div className="flex items-center justify-center flex-col space-y-4">
-      <h1>Timer</h1>
-      <h2 className="scroll-m-20 text-4xl font-semibold tracking-tight first:mt-0">
-        <span>{minutes}</span>
-        <span>:</span>
-        <span>{seconds}</span>
-      </h2>
-      <div className="flex space-x-4">
-        {timerButtons()}
-        <Button onClick={handleStop}>quit early</Button>
-      </div>
-    </div>
+    <Card
+      className={`w-full ${
+        isRunning ? "bg-red-400 text-white" : ""
+      } transition-colors`}
+    >
+      <CardHeader>
+        <CardTitle>{onBreak ? "Break" : "Pomodoro"}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <h2 className="scroll-m-20 text-4xl font-semibold tracking-tight first:mt-0 text-center">
+          <span>{minutes}</span>
+          <span>:</span>
+          <span>{seconds}</span>
+        </h2>
+      </CardContent>
+      <CardFooter>
+        <div className="flex flex-col gap-2 w-full">
+          {timerButtons()}
+          <Button variant="secondary" onClick={handleStop}>
+            quit early
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
   );
 }
