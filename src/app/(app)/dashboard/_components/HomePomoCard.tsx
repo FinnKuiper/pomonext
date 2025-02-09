@@ -6,10 +6,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Button } from "../ui/button";
+} from "../../../../components/ui/card";
+import { Button } from "../../../../components/ui/button";
 import { auth } from "@/auth";
 import PomoStats from "@/models/PomoStats";
+import Link from "next/link";
 
 export default async function HomePomoCard() {
   const session = await auth();
@@ -24,9 +25,15 @@ export default async function HomePomoCard() {
       <Card className="w-full border-dashed">
         <CardHeader>
           <CardTitle>Start your first Pomo</CardTitle>
+          <CardDescription>
+            You haven&apos;t finished a pomo session today. Click the button
+            below to get started!
+          </CardDescription>
         </CardHeader>
         <CardFooter>
-          <Button className="w-full">START!</Button>
+          <Button className="w-full" asChild>
+            <Link href="/timer">START!</Link>
+          </Button>
         </CardFooter>
       </Card>
     );
@@ -64,7 +71,9 @@ export default async function HomePomoCard() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Continue</Button>
+        <Button asChild className="w-full">
+          <Link href="/timer">Continue</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

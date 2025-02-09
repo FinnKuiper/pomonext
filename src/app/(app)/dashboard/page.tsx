@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import HomePomoCard from "@/components/app/HomePomoCard";
+import HomePomoCard from "@/app/(app)/dashboard/_components/HomePomoCard";
 import React from "react";
 
 export default async function Dashboard() {

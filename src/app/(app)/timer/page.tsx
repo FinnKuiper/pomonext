@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function TimerPage() {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-full">
       <Head>
         <title>Timer</title>
       </Head>

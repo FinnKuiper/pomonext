@@ -8,7 +8,7 @@ export default async function layout({
   await connectDB();
   return (
     <>
-      <main className="p-4">{children}</main>
+      <main className="p-4 h-full">{children}</main>
       <NavBar />
     </>
   );
