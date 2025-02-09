@@ -22,6 +22,10 @@ export async function DELETE() {
     const currentTime = new Date();
     if (currentTime < activeSession.endAt) {
       await activeSession.deleteOne();
+      return NextResponse.json(
+        { error: "Session stopped before it's end time" },
+        { status: 400 }
+      );
     }
 
     await activeSession.deleteOne();
