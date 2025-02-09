@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Helmet } from "react-helmet";
 
 export default function TimerCard() {
   const time = new Date();
