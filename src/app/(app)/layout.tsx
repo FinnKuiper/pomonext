@@ -11,9 +11,7 @@ export default function layout({
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <main className="p-4 h-full flex justify-center items-center">
-          {children}
-        </main>
+        <main className="p-4">{children}</main>
         <NavBar />
       </QueryClientProvider>
     </>

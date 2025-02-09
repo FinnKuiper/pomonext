@@ -11,9 +11,18 @@ export async function GET() {
     // find the active PomoSession
     const activeSession = await PomoSession.findOne({
       userId: session?.user?.id,
-      createdAt: { $gte: new Date().setHours(0, 0, 0, 0) },
     });
     if (!activeSession) {
+      return NextResponse.json(
+        { error: "No active session found" },
+        { status: 404 }
+      );
+    }
+
+    // if the session is not from today delete it
+    const today = new Date().toDateString();
+    if (activeSession.createdAt.toDateString() !== today) {
+      await PomoSession.findByIdAndDelete(activeSession._id);
       return NextResponse.json(
         { error: "No active session found" },
         { status: 404 }
