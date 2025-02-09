@@ -9,8 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function TimerCard() {
+  const router = useRouter();
   const time = new Date();
   const [started, setStarted] = useState(false);
   const [onBreak, setOnBreak] = useState(false);
@@ -69,7 +71,7 @@ export default function TimerCard() {
           console.log("Break started");
           restart(new Date(new Date().getTime() + 60000 * 5), false);
         }
-        // start 25 minutes timer
+        router.refresh();
       }
     });
   };
@@ -122,13 +124,23 @@ export default function TimerCard() {
 
   const timerButtons = () => {
     if (!started) {
-      return <Button onClick={onBreak ? start : handleStart}>Start</Button>;
+      return (
+        <Button onClick={onBreak ? start : handleStart} className="w-full">
+          Start
+        </Button>
+      );
     } else {
       if (isRunning) {
-        return <Button onClick={onBreak ? pause : handlePauze}>Pause</Button>;
+        return (
+          <Button onClick={onBreak ? pause : handlePauze} className="w-full">
+            Pause
+          </Button>
+        );
       } else {
         return (
-          <Button onClick={onBreak ? resume : handleResume}>Resume</Button>
+          <Button onClick={onBreak ? resume : handleResume} className="w-full">
+            Resume
+          </Button>
         );
       }
     }
@@ -137,22 +149,22 @@ export default function TimerCard() {
     <Card
       className={`w-full ${
         isRunning ? "bg-red-400 text-white" : ""
-      } transition-colors`}
+      } transition-colors max-w-lg`}
     >
-      <CardHeader>
+      <CardHeader className="sm:p-8">
         <CardTitle>{onBreak ? "Break" : "Pomodoro"}</CardTitle>
       </CardHeader>
-      <CardContent>
-        <h2 className="scroll-m-20 text-4xl font-semibold tracking-tight first:mt-0 text-center">
+      <CardContent className="sm:p-8">
+        <h2 className="scroll-m-20 text-7xl font-semibold tracking-tight first:mt-0 text-center">
           <span>{minutes}</span>
           <span>:</span>
           <span>{seconds}</span>
         </h2>
       </CardContent>
-      <CardFooter>
-        <div className="flex flex-col gap-2 w-full">
+      <CardFooter className="sm:p-8">
+        <div className="flex flex-col sm:flex-row gap-2 w-full">
           {timerButtons()}
-          <Button variant="secondary" onClick={handleStop}>
+          <Button variant="secondary" onClick={handleStop} className="w-full">
             quit early
           </Button>
         </div>
