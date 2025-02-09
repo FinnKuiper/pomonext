@@ -47,8 +47,12 @@ export default function TimerCard() {
       }
     };
     fetchCurrentTimer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     document.title = minutes + ":" + seconds;
-  }, [restart, minutes, seconds]);
+  }, [minutes, seconds]);
 
   const handleStop = () => {
     if (onBreak) {
@@ -77,6 +81,11 @@ export default function TimerCard() {
   };
 
   const handleStart = () => {
+    if (onBreak) {
+      setStarted(true);
+      start();
+      return;
+    }
     fetch("/api/timer/start", {
       method: "POST",
       headers: {
@@ -125,7 +134,7 @@ export default function TimerCard() {
   const timerButtons = () => {
     if (!started) {
       return (
-        <Button onClick={onBreak ? start : handleStart} className="w-full">
+        <Button onClick={handleStart} className="w-full">
           Start
         </Button>
       );
