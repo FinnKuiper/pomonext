@@ -66,7 +66,7 @@ export default function TimerCard() {
       },
       body: JSON.stringify({}),
     }).then((res) => {
-      if (res.ok) {
+      if (res.ok || res.status === 401) {
         console.log("Timer stopped");
         setStarted(false);
         // start 5 minutes break

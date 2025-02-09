@@ -23,8 +23,11 @@ export async function DELETE() {
     if (currentTime < activeSession.endAt) {
       await activeSession.deleteOne();
       return NextResponse.json(
-        { error: "Session stopped before it's end time" },
-        { status: 400 }
+        {
+          error: "Session stopped before it's end time",
+          message: "Session stopped",
+        },
+        { status: 401 }
       );
     }
 
